@@ -6,7 +6,10 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                sh 'mvn -B -DskipTests clean package'
+             script {
+                withMaven(mavenSettingsConfig: 'my-nexus-settings', maven: 'Maven3') { // 替换为你的 Maven 安装名称
+                    sh 'mvn clean deploy -DskipTests' // 执行 Maven 命令，它会使用注入的 settings.xml
+                }
             }
         }
     }
